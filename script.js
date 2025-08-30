@@ -25,8 +25,28 @@ async function getWeather() {
 function displayWeather(data) {
   const { name } = data;
   const { temp, humidity } = data.main;
-  const { description, icon } = data.weather[0];
+  const { description, icon, main: weatherMain} = data.weather[0];
   const { speed } = data.wind;
+
+  // Change background
+  document.body.className = ""; // reset
+  switch (weatherMain.toLowerCase()) {
+    case "clear":
+      document.body.classList.add("sunny");
+      break;
+    case "clouds":
+      document.body.classList.add("cloudy");
+      break;
+    case "rain":
+    case "drizzle":
+      document.body.classList.add("rainy");
+      break;
+    case "snow":
+      document.body.classList.add("snowy");
+      break;
+    default:
+      document.body.classList.add("default-weather");
+  }
 
   weatherResult.innerHTML = `
     <div class="weather-card">
@@ -36,6 +56,22 @@ function displayWeather(data) {
       <p>🌡 Temperature: ${temp} °C</p>
       <p>💧 Humidity: ${humidity}%</p>
       <p>💨 Wind Speed: ${speed} m/s</p>
+      <button id="toggleTemp">Show °F</button>
     </div>
   `;
+ // Add Celsius/Fahrenheit toggle
+  const toggleBtn = document.getElementById("toggleTemp");
+  let isCelsius = true;
+  toggleBtn.addEventListener("click", () => {
+    const tempElement = document.getElementById("temp");
+    if (isCelsius) {
+      const fahrenheit = (temp * 9/5 + 32).toFixed(1);
+      tempElement.textContent = `🌡 Temperature: ${fahrenheit} °F`;
+      toggleBtn.textContent = "Show °C";
+    } else {
+      tempElement.textContent = `🌡 Temperature: ${temp} °C`;
+      toggleBtn.textContent = "Show °F";
+    }
+    isCelsius = !isCelsius;
+  });
 }

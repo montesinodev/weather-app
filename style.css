@@ -76,3 +76,18 @@ button:hover {
   width: 60px;
   height: 60px;
 }
+
+/* Backgrounds */
+body.sunny { background: linear-gradient(to top, #ffe259, #ffa751); transition: background 0.5s; }
+body.cloudy { background: linear-gradient(to top, #bdc3c7, #2c3e50); transition: background 0.5s; }
+body.rainy { background: linear-gradient(to top, #4e54c8, #8f94fb); transition: background 0.5s; }
+body.snowy { background: linear-gradient(to top, #e6e9f0, #eef1f5); transition: background 0.5s; }
+body.default-weather { background: linear-gradient(to top, #a1c4fd, #c2e9fb); transition: background 0.5s; }
+
+/* Optional: floating cloud animation for cloudy */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+body.cloudy .weather-card { animation: float 3s ease-in-out infinite; }
