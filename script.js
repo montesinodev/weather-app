@@ -25,45 +25,40 @@ async function getWeather() {
 function displayWeather(data) {
   const { name } = data;
   const { temp, humidity } = data.main;
-  const { description, icon, main: weatherMain} = data.weather[0];
+  const { description, icon, main: weatherMain } = data.weather[0];
   const { speed } = data.wind;
 
   // Change background
-  document.body.className = ""; // reset
+  document.body.className = ""; 
   switch (weatherMain.toLowerCase()) {
-    case "clear":
-      document.body.classList.add("sunny");
-      break;
-    case "clouds":
-      document.body.classList.add("cloudy");
-      break;
-    case "rain":
-    case "drizzle":
-      document.body.classList.add("rainy");
-      break;
-    case "snow":
-      document.body.classList.add("snowy");
-      break;
-    default:
-      document.body.classList.add("default-weather");
+    case "clear": document.body.classList.add("sunny"); break;
+    case "clouds": document.body.classList.add("cloudy"); break;
+    case "rain": case "drizzle": document.body.classList.add("rainy"); break;
+    case "snow": document.body.classList.add("snowy"); break;
+    default: document.body.classList.add("default-weather");
   }
 
+  // Render new content
   weatherResult.innerHTML = `
     <div class="weather-card">
       <h2>${name}</h2>
       <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
       <p>${description}</p>
-      <p>🌡 Temperature: ${temp} °C</p>
+      <p id="temp">🌡 Temperature: ${temp} °C</p>
       <p>💧 Humidity: ${humidity}%</p>
       <p>💨 Wind Speed: ${speed} m/s</p>
       <button id="toggleTemp">Show °F</button>
     </div>
   `;
- // Add Celsius/Fahrenheit toggle
+
+  // Always attach new event listener to the new button
   const toggleBtn = document.getElementById("toggleTemp");
   let isCelsius = true;
-  toggleBtn.addEventListener("click", () => {
+
+  toggleBtn?.addEventListener("click", () => {
     const tempElement = document.getElementById("temp");
+    if (!tempElement) return; // Safety check
+
     if (isCelsius) {
       const fahrenheit = (temp * 9/5 + 32).toFixed(1);
       tempElement.textContent = `🌡 Temperature: ${fahrenheit} °F`;
@@ -75,3 +70,4 @@ function displayWeather(data) {
     isCelsius = !isCelsius;
   });
 }
+
